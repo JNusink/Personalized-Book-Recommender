@@ -1,0 +1,6 @@
+*.pkl
+*.parquet
+Books.jsonl
+mlruns/
+__pycache__/
+*.log
