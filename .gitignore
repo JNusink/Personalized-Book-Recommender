@@ -4,3 +4,4 @@ Books.jsonl
 mlruns/
 __pycache__/
 *.log
+*.credentials
