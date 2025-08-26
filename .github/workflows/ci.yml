@@ -20,5 +20,5 @@ jobs:
           flake8 . --max-line-length=120 --extend-ignore=E203 --exclude=venv,__pycache__,archive
       - name: Run tests
         run: |
-          pytest -v
+          pytest -v --ignore=archive
           
