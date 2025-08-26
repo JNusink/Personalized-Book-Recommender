@@ -14,6 +14,7 @@ import logging
 import boto3
 import traceback
 import json
+import jsonlines
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,6 +29,7 @@ s3 = boto3.client('s3')
 bucket_name = 'my-book-recommender-2025-jtnusink'
 s3_file_key = 'data/Books.jsonl'
 local_file = 'books_5core_1M.parquet'
+
 
 def process_chunk(chunk):
     """Process a chunk of JSONL data for streaming fallback."""
@@ -50,6 +52,7 @@ def process_chunk(chunk):
         except Exception as e:
             logger.warning(f"Skipping invalid line: {e}")
     return user_ids, item_ids, ratings, timestamps
+
 
 try:
     # Load data (prefer local parquet, fallback to S3 streaming)
