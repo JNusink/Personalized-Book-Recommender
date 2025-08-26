@@ -15,6 +15,7 @@ import boto3
 import traceback
 import json
 
+# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -22,10 +23,59 @@ logger = logging.getLogger(__name__)
 os.environ["MLFLOW_LOGGING_WARNINGS"] = "0"
 warnings.filterwarnings("ignore", category=UserWarning, module="mlflow.*")
 
+# Initialize S3 client for streaming fallback
+s3 = boto3.client('s3')
+bucket_name = 'my-book-recommender-2025-jtnusink'
+s3_file_key = 'data/Books.jsonl'
+local_file = 'books_5core_1M.parquet'
+
+def process_chunk(chunk):
+    """Process a chunk of JSONL data for streaming fallback."""
+    user_ids = []
+    item_ids = []
+    ratings = []
+    timestamps = []
+    for line in chunk:
+        try:
+            data = eval(line)  # Adjust if JSONL format differs (e.g., json.loads if valid JSON)
+            user_id = data.get('user_id')
+            item_id = data.get('parent_asin')  # Match your column name
+            rating = data.get('rating')
+            timestamp = data.get('timestamp')
+            if user_id and item_id and rating and timestamp and rating >= 2:
+                user_ids.append(user_id)
+                item_ids.append(item_id)
+                ratings.append(rating)
+                timestamps.append(timestamp)
+        except Exception as e:
+            logger.warning(f"Skipping invalid line: {e}")
+    return user_ids, item_ids, ratings, timestamps
+
 try:
-    # Load data
-    logger.info("Loading books_5core_1M.parquet")
-    df = pd.read_parquet('books_5core_1M.parquet')
+    # Load data (prefer local parquet, fallback to S3 streaming)
+    if os.path.exists(local_file):
+        logger.info("Loading data from local parquet file...")
+        df = pd.read_parquet(local_file)
+    else:
+        logger.info("Local parquet not found, streaming from S3...")
+        user_ids_all = []
+        item_ids_all = []
+        ratings_all = []
+        timestamps_all = []
+        response = s3.get_object(Bucket=bucket_name, Key=s3_file_key)
+        with jsonlines.Reader(response['Body']) as reader:
+            for obj in reader:
+                user_ids, item_ids, ratings, timestamps = process_chunk([obj])
+                user_ids_all.extend(user_ids)
+                item_ids_all.extend(item_ids)
+                ratings_all.extend(ratings)
+                timestamps_all.extend(timestamps)
+        df = pd.DataFrame({
+            'user_id': user_ids_all,
+            'parent_asin': item_ids_all,
+            'rating': ratings_all,
+            'timestamp': timestamps_all
+        })
 
     # Verify aggregation method
     logger.info("Using most recent rating aggregation (un-normalized, threshold 2, 1M dataset)")
