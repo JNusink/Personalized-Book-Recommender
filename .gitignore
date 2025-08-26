@@ -5,3 +5,4 @@ mlruns/
 __pycache__/
 *.log
 *.credentials*
+user_item_matrix.pkl
