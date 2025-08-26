@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 
+
 @st.cache_data
 def load_user_ids():
     try:
@@ -15,6 +16,7 @@ def load_user_ids():
     except Exception as e:
         st.error(f"Error loading user IDs: {e}")
         return ["AE224GVO7OHTYF26U6ER6BEVIUAQ"]
+
 
 st.title("Book Recommender")
 st.markdown("Select a user ID to get personalized book recommendations.")

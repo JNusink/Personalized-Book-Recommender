@@ -1,0 +1,26 @@
+2025-08-25 18:41:01,108 - INFO - Starting script execution in: C:\VS code\Final project
+2025-08-25 18:41:01,108 - DEBUG - Loading books_5core_1M.parquet
+2025-08-25 18:41:01,156 - INFO - Using most recent rating aggregation (un-normalized, threshold 2, 1M dataset)
+2025-08-25 18:41:01,156 - INFO - Rating range: 1 - 5
+2025-08-25 18:41:01,156 - DEBUG - Aggregating duplicates
+2025-08-25 18:41:01,220 - DEBUG - Creating user-item matrix
+2025-08-25 18:41:06,981 - DEBUG - Saving user_item_matrix.npz
+2025-08-25 18:41:07,066 - INFO - Sparse matrix and indices saved successfully
+2025-08-25 18:41:07,067 - DEBUG - Splitting data
+2025-08-25 18:41:07,069 - DEBUG - Setting MLflow experiment
+2025-08-25 18:41:07,260 - DEBUG - MLflow run started
+2025-08-25 18:41:07,261 - DEBUG - Logging parameters: {'n_components': 1000, 'sample_size': 160666, 'n_users': 38640, 'n_items': 15853, 'sparsity': 0.9997377138223473, 'data_version': 'books_5core_1M', 'n_iter': 10, 'aggregation': 'most_recent', 'normalized': False, 'precision_threshold': 2}
+2025-08-25 18:41:07,268 - DEBUG - Training SVD
+2025-08-25 18:41:24,423 - INFO - SVD trained with components shape: (1000, 15853)
+2025-08-25 18:41:24,423 - DEBUG - Attempting to save model to C:\VS code\Final project\model.pkl
+2025-08-25 18:41:24,552 - INFO - Model dumped to C:\VS code\Final project\model.pkl
+2025-08-25 18:41:24,593 - INFO - Model successfully saved and loaded from C:\VS code\Final project\model.pkl
+2025-08-25 18:41:24,593 - DEBUG - Calculating metrics
+2025-08-25 18:41:28,330 - DEBUG - Calculating precision@k
+2025-08-25 18:41:39,014 - DEBUG - Logging metrics: train_rmse=3.319629851397123, test_rmse=3.853814293703952, train_precision_5=0.3541084368530021, test_precision_5=0.295212215320911
+2025-08-25 18:41:39,026 - DEBUG - Logging model with signature
+2025-08-25 18:41:41,920 - DEBUG - Registering model
+2025-08-25 18:41:42,056 - DEBUG - Uploading to S3
+2025-08-25 18:41:42,612 - ERROR - S3 upload failed: Failed to upload model.pkl to my-book-recommender-2025-jtnusink/data/model.pkl: An error occurred (InvalidAccessKeyId) when calling the CreateMultipartUpload operation: The AWS Access Key Id you provided does not exist in our records.. Continuing without upload.
+2025-08-25 18:41:42,618 - INFO - Train RMSE: 3.3196, Test RMSE: 3.8538
+2025-08-25 18:41:42,618 - INFO - Train Precision@5: 0.3541, Test Precision@5: 0.2952

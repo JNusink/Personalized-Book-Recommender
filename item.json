@@ -1,0 +1,7 @@
+{
+    "user_id": {"S": "test_user"},
+    "item_id": {"S": "test_item"},
+    "predicted_rating": {"N": "4.5"},
+    "timestamp": {"N": "1698765432"},
+    "latency": {"N": "0.1"}
+}

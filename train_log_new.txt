@@ -1,0 +1,8 @@
+2025-08-25 18:22:00,769 - INFO - Starting script execution in: C:\VS code\Final project
+2025-08-25 18:22:00,770 - DEBUG - Loading books_5core_1M.parquet
+2025-08-25 18:22:00,817 - INFO - Using most recent rating aggregation (un-normalized, threshold 2, 1M dataset)
+2025-08-25 18:22:00,818 - INFO - Rating range: 1 - 5
+2025-08-25 18:22:00,818 - DEBUG - Aggregating duplicates
+2025-08-25 18:22:00,886 - DEBUG - Creating user-item matrix
+2025-08-25 18:22:06,326 - DEBUG - Saving user_item_matrix.pkl
+2025-08-25 18:22:06,327 - ERROR - Failed to save user_item_matrix.pkl: [Errno 22] Invalid argument: 'user_item_matrix.pkl'

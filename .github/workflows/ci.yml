@@ -1,0 +1,31 @@
+name: CI Pipeline
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt flake8 pytest
+
+      - name: Run linter
+        run: |
+          # Check for PEP 8 compliance
+          flake8 . --max-line-length=120 --extend-ignore=E203 --exclude=venv,__pycache__
+
+      - name: Run tests
+        run: |
+          # Placeholder health check and basic tests
+          python -c "import requests; assert requests.get('http://localhost:8000/health').status_code == 200"
+          pytest -v  # Add test cases in tests/ directory if available
+          
